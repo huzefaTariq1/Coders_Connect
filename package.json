@@ -1,0 +1,11 @@
+{
+  "name": "coders_connect",
+  "version": "1.0.0",
+  "description": "social network app for connecting coders",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Huzefa Tariq",
+  "license": "ISC"
+}

@@ -2,12 +2,13 @@ const { body, validationResult } = require('express-validator')
 const User = require('../models/Users')
 const gravatar = require('gravatar')
 const bcrypt = require('bcryptjs')
+const JWT = require("jsonwebtoken")
 
 
 
 
 
-        //@ controller function for Signup
+//@ controller function for Signup
 
 const signup = async (req, res) => {
     // validating errors by express-validator
@@ -53,9 +54,24 @@ const signup = async (req, res) => {
 
         user.password = await bcrypt.hash(password, salt)
 
-        const createdUser = await user.save()
+        await user.save()
 
-        res.status(200).send(createdUser)
+const payload={
+    user:{
+        id:user.id
+    }
+}
+
+JWT.sign(
+    payload,
+    process.env.SECRECT_TOKEN,
+    {expiresIn:"1hr"},
+    (err,token)=>{
+        if (err) throw err;
+        res.json({token})
+    }
+)
+
 
     } catch (error) {
         console.error(error.message);

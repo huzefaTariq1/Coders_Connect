@@ -1,18 +1,23 @@
 const User = require('../models/Users')
 const bcrypt = require('bcryptjs')
 const JWT = require("jsonwebtoken")
+const { body, validationResult } = require('express-validator')
 
 
 //@ controller function for authenticate and getting token
 
 const loginAndToken = async (req, res) => {
-
+        // validating errors by express-validator
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ errors: error.array() });
+    }
 
     const { email, password } = req.body
 
 
     try {
-        // check user already exist
+        // check wheather user exist or not
         let user = await User.findOne({ email });
         if (!user) {
             res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
